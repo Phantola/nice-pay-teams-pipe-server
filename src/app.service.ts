@@ -57,7 +57,9 @@ export class AppService {
                 type: 'TextBlock',
                 text:
                   '결제 일시 : ' +
-                  dayjs(paymentInfo.paidAt).format('YYYY-MM-DD HH:mm:ss'),
+                  dayjs(paymentInfo.paidAt)
+                    .add(9, 'hours')
+                    .format('YYYY-MM-DD HH:mm:ss'),
               },
               {
                 type: 'TextBlock',
