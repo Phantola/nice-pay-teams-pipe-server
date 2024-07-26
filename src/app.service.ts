@@ -37,9 +37,8 @@ export class AppService {
               {
                 type: 'TextBlock',
                 text:
-                  '알림 정보 : ' + paymentInfo.status === 'paid'
-                    ? '결제 완료'
-                    : '결제 취소',
+                  '알림 정보 : ' +
+                  (paymentInfo.status === 'paid' ? '결제 완료' : '결제 취소'),
               },
               {
                 type: 'TextBlock',
