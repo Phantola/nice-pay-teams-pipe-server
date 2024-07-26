@@ -8,4 +8,5 @@ export interface PayLog {
   paidAt: Date;
   cardName: string | null;
   cardNum: string | null;
+  receiptUrl: string;
 }

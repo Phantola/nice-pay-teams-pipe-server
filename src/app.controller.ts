@@ -22,13 +22,13 @@ export class AppController {
       paidAt,
       card,
       status,
+      receiptUrl,
     } = body;
 
     const { cardName, cardNum } = card;
 
     try {
       await this.appService.savePayLog({
-        status,
         goodsName,
         buyerName,
         buyerTel,
@@ -37,6 +37,8 @@ export class AppController {
         paidAt,
         cardName,
         cardNum,
+        status,
+        receiptUrl,
       });
     } catch (err) {
       console.log(err);
