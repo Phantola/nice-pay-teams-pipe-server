@@ -8,7 +8,6 @@ export class AppService {
   constructor() {}
 
   async savePayLog(data: PayLog) {
-    console.log(data);
     const microsoftTeamsWebhookUrl = process.env.MICROSOFT_TEAMS_WEBHOOK_URL;
 
     if (!microsoftTeamsWebhookUrl) {
@@ -75,6 +74,10 @@ export class AppService {
               {
                 type: 'TextBlock',
                 text: '카드 번호 : ' + (paymentInfo.cardNum || '없음'),
+              },
+              {
+                type: 'TextBlock',
+                text: '영수증 링크 : ' + (paymentInfo.receiptUrl || '없음'),
               },
             ],
           },
