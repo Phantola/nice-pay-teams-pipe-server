@@ -8,6 +8,7 @@ export class AppService {
   constructor() {}
 
   async savePayLog(data: PayLog) {
+    console.log(data);
     const microsoftTeamsWebhookUrl = process.env.MICROSOFT_TEAMS_WEBHOOK_URL;
 
     if (!microsoftTeamsWebhookUrl) {
