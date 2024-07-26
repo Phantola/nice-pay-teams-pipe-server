@@ -15,53 +15,62 @@ export class AppService {
     }
 
     try {
-      await axios.post(microsoftTeamsWebhookUrl, {
-        '@type': 'MessageCard',
-        '@context': 'http://schema.org/extensions',
-        themeColor: '0076D7',
-        summary: '결제 완료 알림',
-        sections: [
-          {
-            activityTitle: '결제 완료 알림',
-            facts: [
-              {
-                name: '상품명',
-                value: data.goodsName,
-              },
-              {
-                name: '구매자 이름',
-                value: data.buyerName,
-              },
-              {
-                name: '구매자 전화번호',
-                value: data.buyerTel || '없음',
-              },
-              {
-                name: '구매자 이메일',
-                value: data.buyerEmail || '없음',
-              },
-              {
-                name: '결제 금액',
-                value: data.amount,
-              },
-              {
-                name: '결제 일시',
-                value: dayjs(data.paidAt).format('YYYY-MM-DD HH:mm:ss'),
-              },
-              {
-                name: '카드 이름',
-                value: data.cardName || '없음',
-              },
-              {
-                name: '카드 번호',
-                value: data.cardNum || '없음',
-              },
-            ],
-          },
-        ],
-      });
+      await axios.post(microsoftTeamsWebhookUrl, this.getCardBody(data));
     } catch (err) {
       console.log(err);
     }
+  }
+
+  private getCardBody(paymentInfo: PayLog) {
+    return {
+      kind: 'PaymentWebhook',
+      attachments: [
+        {
+          contentType: 'MessageCard',
+          contentUrl: null,
+          content: {
+            $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+            type: 'AdaptiveCard',
+            version: '1.2',
+            body: [
+              {
+                type: 'TextBlock',
+                text: '상품명 : ' + paymentInfo.goodsName,
+              },
+              {
+                type: 'TextBlock',
+                text: '구매자 이름 : ' + paymentInfo.buyerName,
+              },
+              {
+                type: 'TextBlock',
+                text: '구매자 연락처 : ' + (paymentInfo.buyerTel || '없음'),
+              },
+              {
+                type: 'TextBlock',
+                text: '구매자 이메일 : ' + (paymentInfo.buyerEmail || '없음'),
+              },
+              {
+                type: 'TextBlock',
+                text: '결제 금액 : ' + paymentInfo.amount,
+              },
+              {
+                type: 'TextBlock',
+                text:
+                  '결제 일시 : ' +
+                  dayjs(paymentInfo.paidAt).format('YYYY-MM-DD HH:mm:ss'),
+              },
+              {
+                type: 'TextBlock',
+                text: '카드 이름 : ' + (paymentInfo.cardName || '없음'),
+              },
+              {
+                type: 'TextBlock',
+                text: '카드 번호 : ' + (paymentInfo.cardNum || '없음'),
+              },
+            ],
+          },
+        },
+      ],
+    };
   }
 }
