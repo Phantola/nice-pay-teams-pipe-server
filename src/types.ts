@@ -1,4 +1,5 @@
 export interface PayLog {
+  status: string;
   goodsName: string;
   buyerName: string;
   buyerTel: string;

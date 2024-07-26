@@ -13,13 +13,22 @@ export class AppController {
   @Post('pay')
   @HttpCode(200)
   async postPayWebHook(@Body() body: any) {
-    const { goodsName, buyerName, buyerTel, buyerEmail, amount, paidAt, card } =
-      body;
+    const {
+      goodsName,
+      buyerName,
+      buyerTel,
+      buyerEmail,
+      amount,
+      paidAt,
+      card,
+      status,
+    } = body;
 
     const { cardName, cardNum } = card;
 
     try {
       await this.appService.savePayLog({
+        status,
         goodsName,
         buyerName,
         buyerTel,
