@@ -27,7 +27,7 @@ export class AppService {
       attachments: [
         {
           contentType: 'MessageCard',
-          contentUrl: paymentInfo.receiptUrl || null,
+          contentUrl: null,
           content: {
             $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
             type: 'AdaptiveCard',
