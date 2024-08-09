@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { PayLog } from './types';
@@ -84,5 +85,37 @@ export class AppService {
         },
       ],
     };
+  }
+
+  @Cron('0 0 0 * * *')
+  async autoHealthCheckNotification() {
+    const body = {
+      kind: 'PaymentWebhook',
+      attachments: [
+        {
+          contentType: 'MessageCard',
+          contentUrl: null,
+          content: {
+            $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+            type: 'AdaptiveCard',
+            version: '1.2',
+            body: [
+              {
+                type: 'TextBlock',
+                text: '=============== 자동 알림 : 서버 상태 정상 ===============',
+                color: 'good',
+              },
+            ],
+          },
+        },
+      ],
+    };
+
+    try {
+      const microsoftTeamsWebhookUrl = process.env.MICROSOFT_TEAMS_WEBHOOK_URL;
+      await axios.post(microsoftTeamsWebhookUrl, body);
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
